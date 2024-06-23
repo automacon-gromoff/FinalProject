@@ -1,0 +1,29 @@
+services:
+  app:
+    build: ./
+    command: ./wait-for-db.sh db ./final-project
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=secret
+  db:
+    restart: always
+    container_name: library-db
+    image: postgres:latest
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - "5432:5432"
+  migrate:
+    image: migrate/migrate
+    links:
+      - db
+    volumes:
+      - ./schema:/schema
+    depends_on:
+      - app
+    command: ["-path ./schema -database 'postgres://postgres:secret@db:5432/postgres?sslmode=disable' up"]
