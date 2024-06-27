@@ -1,5 +1,5 @@
 #!/bin/sh
-# waitForDB.sh
+# wait-for-db.sh
 
 set -e
 
