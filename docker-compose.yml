@@ -1,7 +1,7 @@
 services:
   app:
     build: ./
-    command: ./wait-for-db.sh db ./final-project
+    command: ./waitForDB.sh db ./final-project
     ports:
       - "8000:8000"
     depends_on:
