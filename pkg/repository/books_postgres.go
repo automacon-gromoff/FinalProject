@@ -35,9 +35,16 @@ func (r *BooksPostgres) GetAll() ([]library.Book, error) {
 
 	for rows.Next() {
 		var book library.Book
-		rows.Scan(&book.Id, &book.Name, &book.AuthorId, &book.PublishingYear, &book.ISBN)
+		if err := rows.Scan(&book.Id, &book.Name, &book.AuthorId, &book.PublishingYear, &book.ISBN); err != nil {
+			return nil, err
+		}
 		books = append(books, book)
 	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return books, err
 }
 

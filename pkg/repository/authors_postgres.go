@@ -35,9 +35,16 @@ func (r *AuthorsPostgres) GetAll() ([]library.Author, error) {
 
 	for rows.Next() {
 		var author library.Author
-		rows.Scan(&author.Id, &author.Name, &author.Surname, &author.Biography, &author.BornDate)
+		if err := rows.Scan(&author.Id, &author.Name, &author.Surname, &author.Biography, &author.BornDate); err != nil {
+			return nil, err
+		}
 		authors = append(authors, author)
 	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return authors, err
 }
 
