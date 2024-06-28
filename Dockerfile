@@ -8,11 +8,4 @@ RUN go mod download
 
 COPY ./ ./
 
-RUN apt-get update
-RUN apt-get -y install postgresql-client
-
-RUN chmod +x wait-for-db.sh
-
 RUN go build -o final-project ./cmd/main.go
-
-CMD ["./app"]
